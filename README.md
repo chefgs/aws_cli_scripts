@@ -22,10 +22,10 @@ There are also scripts added to terminate the resources too.
 Pre-Requisite to run the scripts
 </h2>
 <p>
-AWS CLI<br>
-Installation can be referred here for <a href="https://docs.aws.amazon.com/cli/latest/userguide/installing.html">All Operating System</a>
+<h3>AWS CLI</h3><br>
+Installation can be referred here for <a href="https://docs.aws.amazon.com/cli/latest/userguide/installing.html">All Operating System</a><br>
 Configuration can be <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html"> referred here</a> 
 </p>
 <p>
-Since the scripts are writted in shell, it is ready to be run in Linux flavours instantly<br>
+Since the scripts are writted in shell, it is ready to be run in Linux flavours<br>
 But running the scripts in Windows requires <a href="https://git-scm.com/downloads">Git Bash for Windows</a>
