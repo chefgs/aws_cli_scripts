@@ -3,8 +3,8 @@
 ## param 1 - AWS account profile name - "default" or "account2"
 
 ## Example: 
-## ./delete_v2_elb.sh 1 default
-## ./delete_v2_elb.sh 1 account2
+## ./delete_v2_elb.sh default
+## ./delete_v2_elb.sh account2
 
 ##
 ## This script can be used to delete ALL the ELBs of type V2
