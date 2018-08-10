@@ -1,0 +1,37 @@
+#!/bin/bash
+mkdir -p /data/installers
+mkdir -p /data/cookbooks
+cd /data/installers/
+rm -rf /data/cookbooks/*
+
+# Install wget
+if [ ! -f /bin/wget ] ; then
+yum install wget -y
+fi
+
+# Install Chef client
+if [ ! -f /bin/chef-client ] ; then
+echo "Installing chef client"
+#wget https://packages.chef.io/files/stable/chef/13.9.1/el/7/chef-13.9.1-1.el7.x86_64.rpm
+wget https://packages.chef.io/files/stable/chef/14.3.37/el/7/chef-14.3.37-1.el7.x86_64.rpm
+rpm -i chef-14*.rpm
+fi
+
+# Install git
+if [ ! -f /bin/git ] ; then
+yum install git -y
+fi
+
+echo "Creating dummmy rpm"
+git clone https://github.com/chefgs/create_dummy_rpm.git
+cd create_dummy_rpm
+chmod +x create_rpm.sh
+./create_rpm.sh spec_file/monitoring-agent.spec
+
+cd /data/cookbooks
+echo "Cookbook Repo cloning"
+git clone https://github.com/chefgs/cloud_init.git
+
+echo "Executing chef-client"
+cd /data
+chef-client -z -o cloud_init >> /var/log/chefrun.out
