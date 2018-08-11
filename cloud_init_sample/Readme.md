@@ -8,6 +8,11 @@
    - Set the hostname in the configuration of the monitoring agent. Config file located at “/etc/mon-agent/agent.conf”  <br>
    - Ensure that the two users, “alice” and “bob”, exist and are part of the group “my-staff” <br>
 
+### Goal
+- The script can be used to create the bulk instances, applied with similar config across all the instances. Hence this can be considered as "Cattle" instance provisioning. <br>
+- In case the instances needed to be updated with new config, they can be terminated in bulk <br>
+- We can update the Chef config and can re-create the instances in bulk using the `create_instance.sh` script. <br>
+
 ### Technologies used
 - `AWS CLI` command for instance creation <br>
 - `Cloud-init` script passed in instance creation user_data section <br>
@@ -26,6 +31,9 @@
 - cd Cloud_init_sample
 - Update the SG-rule name and key-pair name in the script
 - Run `./create_instance 1` . This command will create 1 EC2 instance of type t2.micro with RHEL OS <br>
+
+### Terminate Instances
+TBA
 
 ### Source code repo details
 [AWS CLI instance create repo](https://github.com/chefgs/aws_cli_scripts/tree/master/cloud_init_sample) <br>
