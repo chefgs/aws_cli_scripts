@@ -31,3 +31,29 @@
 [AWS CLI instance create repo](https://github.com/chefgs/aws_cli_scripts/tree/master/cloud_init_sample) <br>
 [Chef cookbook repo](https://github.com/chefgs/cloud_init.git) <br>
 [Dummy rpm create repo](https://github.com/chefgs/create_dummy_rpm.git) <br>
+
+### Output details
+#### Hostname set in OS and agent.conf
+```
+[root@cloud-init-server log]# hostname
+cloud-init-server
+[root@cloud-init-server log]# cat /etc/mon-agent/agent.conf
+hostname="cloud-init-server"
+```
+#### RPM package added
+```
+TBA
+```
+#### Group and users added
+```
+[root@cloud-init-server]# cat /etc/group | grep my-staff
+my-staff:x:1001:
+
+[root@cloud-init-server]# cat /etc/passwd | grep 1001
+alice:x:1001:1001::/home/alice:/bin/bash
+bob:x:1002:1001::/home/bob:/bin/bash
+```
+#### Chef client run sets the desired config state
+```
+TBA
+```
