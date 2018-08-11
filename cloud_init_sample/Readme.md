@@ -42,7 +42,8 @@ hostname="cloud-init-server"
 ```
 #### RPM package added
 ```
-TBA
+[root@cloud-init-server log]# rpm -qa | grep monitor
+my-monitoring-agent-1.0-1.noarch
 ```
 #### Group and users added
 ```
@@ -53,7 +54,68 @@ my-staff:x:1001:
 alice:x:1001:1001::/home/alice:/bin/bash
 bob:x:1002:1001::/home/bob:/bin/bash
 ```
-#### Chef client run sets the desired config state
+#### Chef client run sets the desired config state, while the instance is created
 ```
-TBA
+[2018-08-11T02:23:17+00:00] WARN: No config file found or specified on command line, using command line options.
+Starting Chef Client, version 14.3.37
+[2018-08-11T02:23:19+00:00] WARN: Run List override has been provided.
+[2018-08-11T02:23:19+00:00] WARN: Original Run List: []
+[2018-08-11T02:23:19+00:00] WARN: Overridden Run List: [recipe[cloud_init]]
+resolving cookbooks for run list: ["cloud_init"]
+Synchronizing Cookbooks:
+  - cloud_init (0.1.0)
+Installing Cookbook Gems:
+Compiling Cookbooks...
+Recipe: cloud_init::default
+  * hostname[cloud-init-server] action set
+    * ohai[reload hostname] action nothing (skipped due to action :nothing)
+    * execute[set hostname to cloud-init-server] action run
+      - execute /bin/hostname cloud-init-server
+    * file[/etc/hosts] action create
+      - update content in file /etc/hosts from 6768ce to 4f1182
+      --- /etc/hosts    2018-03-23 17:51:30.543000000 +0000
+      +++ /etc/.chef-hosts20180811-1377-136lrva 2018-08-11 02:23:19.402334478 +0000
+      @@ -1,4 +1,4 @@
+       127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+       ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+      -
+      +172.31.25.53 cloud-init-server cloud-init-server
+      - restore selinux security context
+    * execute[hostnamectl set-hostname cloud-init-server] action run
+      - execute hostnamectl set-hostname cloud-init-server
+    * ohai[reload hostname] action reload
+      - re-run ohai and merge results into node attributes
+
+  Converging 7 resources
+  * hostname[cloud-init-server] action set
+    * ohai[reload hostname] action nothing (skipped due to action :nothing)
+    * execute[set hostname to cloud-init-server] action run (skipped due to not_if)
+    * file[/etc/hosts] action create (skipped due to not_if)
+    * execute[hostnamectl set-hostname cloud-init-server] action run (skipped due to not_if)
+     (up to date)
+  * rpm_package[my-monitoring-agent] action install
+    - install version 1.0-1 of package my-monitoring-agent
+  * directory[/etc/mon-agent/] action create
+    - create new directory /etc/mon-agent/
+    - restore selinux security context
+  * template[/etc/mon-agent/agent.conf] action create
+    - create new file /etc/mon-agent/agent.conf
+    - update content in file /etc/mon-agent/agent.conf from none to e38ed0
+    --- /etc/mon-agent/agent.conf       2018-08-11 02:23:19.810334478 +0000
+    +++ /etc/mon-agent/.chef-agent20180811-1377-5g91rv.conf     2018-08-11 02:23:19.809334478 +0000
+    @@ -1 +1,2 @@
+    +hostname="cloud-init-server"
+    - restore selinux security context
+  * group[my-staff] action create
+    - create group my-staff
+  * linux_user[alice] action create
+    - create user alice
+  * linux_user[bob] action create
+    - create user bob
+[2018-08-11T02:23:19+00:00] WARN: Skipping final node save because override_runlist was given
+
+Running handlers:
+Running handlers complete
+Chef Client finished, 11/17 resources updated in 01 seconds
+
 ```
