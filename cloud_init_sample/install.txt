@@ -28,6 +28,7 @@ cd create_dummy_rpm
 chmod +x create_rpm.sh
 ./create_rpm.sh spec_file/my-monitoring-agent.spec
 
+cd /data/cookbooks
 echo "Cookbook Repo cloning"
 git clone https://github.com/chefgs/cloud_init.git
 
