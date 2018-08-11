@@ -30,7 +30,7 @@
 - Clone the Cloud_init_sample repo 
 - cd Cloud_init_sample
 - Update the SG-rule name and key-pair name in the script
-- Run `./create_instance 1` . This command will create 1 EC2 instance of type t2.micro with RHEL OS <br>
+- Run `./create_instances.sh 1` . This command will create 1 EC2 instance of type t2.micro with RHEL OS <br>
 
 ### Terminate Instances
 TBA
