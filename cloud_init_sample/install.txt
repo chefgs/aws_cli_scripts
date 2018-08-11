@@ -21,14 +21,13 @@ fi
 if [ ! -f /bin/git ] ; then
 yum install git -y
 fi
-
+cd /data/cookbooks
 echo "Creating dummmy rpm"
 git clone https://github.com/chefgs/create_dummy_rpm.git
 cd create_dummy_rpm
 chmod +x create_rpm.sh
-./create_rpm.sh spec_file/monitoring-agent.spec
+./create_rpm.sh spec_file/my-monitoring-agent.spec
 
-cd /data/cookbooks
 echo "Cookbook Repo cloning"
 git clone https://github.com/chefgs/cloud_init.git
 
