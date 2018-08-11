@@ -3,37 +3,37 @@ mkdir -p /data/installers
 mkdir -p /data/cookbooks
 cd /data/installers/
 rm -rf /data/cookbooks/*
-
+outfile='/var/log/userdata.out'
 # Install wget
 if [ ! -f /bin/wget ] ; then
-yum install wget -y
+yum install wget -y >> $outfile
 fi
 
 # Install Chef client v14
 if [ ! -f /bin/chef-client ] ; then
-echo "Installing chef client"
-wget https://packages.chef.io/files/stable/chef/14.3.37/el/7/chef-14.3.37-1.el7.x86_64.rpm
-rpm -i chef-14*.rpm
+echo "Installing chef client" >> $outfile
+wget https://packages.chef.io/files/stable/chef/14.3.37/el/7/chef-14.3.37-1.el7.x86_64.rpm >> $outfile
+rpm -i chef-14*.rpm >> $outfile
 fi
 
 # Install git
 if [ ! -f /bin/git ] ; then
-yum install git -y
+yum install git -y >> $outfile
 fi
 
 # Clone rpm creation repo
 cd /data/cookbooks
-echo "Creating dummmy rpm"
-git clone https://github.com/chefgs/create_dummy_rpm.git
+echo "Creating dummmy rpm" >> $outfile
+git clone https://github.com/chefgs/create_dummy_rpm.git >> $outfile
 cd create_dummy_rpm
 chmod +x create_rpm.sh
-./create_rpm.sh spec_file/my-monitoring-agent.spec
+./create_rpm.sh spec_file/my-monitoring-agent.spec >> $outfile
 
 # Clone Chef cookbook repo
 cd /data/cookbooks
-echo "Cookbook Repo cloning"
-git clone https://github.com/chefgs/cloud_init.git
+echo "Cookbook Repo cloning" >> $outfile 
+git clone https://github.com/chefgs/cloud_init.git >> $outfile
 
-echo "Executing chef-client"
+echo "Executing chef-client" >> $outfile
 cd /data
 chef-client -z -o cloud_init >> /var/log/chefrun.out
