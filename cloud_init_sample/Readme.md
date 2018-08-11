@@ -22,18 +22,21 @@
 - `Github` used as source repo and git commands extensively used while development <br>
 - `Chef-client` run in local-mode eliminating the need of Chef server. <br>
 
-### Instance creation steps
+### Pre-requisite Setup
 - AWS CLI setup / config
-- Git installation, if git not available
+- Git for Linux or Gitbash for Windows setup required to access git and clone repos.
+
+### Instance creation steps
 - Setup SG rule for rhel in AWS
 - Setup AWS keypair to be used for login to instance
 - Clone the Cloud_init_sample repo 
 - cd Cloud_init_sample
 - Update the SG-rule name and key-pair name in the script
 - Run `./create_instances.sh 1` . This command will create 1 EC2 instance of type t2.micro with RHEL OS <br>
+- TBA > profile and subnet/sg param
 
 ### Terminate Instances
-TBA
+- Run `./terminate_instances.sh default` . This command will terminate all the instances available under account linked to default profile
 
 ### Source code repo details
 [AWS CLI instance create repo](https://github.com/chefgs/aws_cli_scripts/tree/master/cloud_init_sample) <br>
