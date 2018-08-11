@@ -11,7 +11,8 @@
 ### Technologies used
 - `AWS CLI` command for instance creation <br>
 - `Cloud-init` script passed in instance creation user_data section <br>
-- `rpm-build` for creation of dummy rpm package <br>
+- `bash shell` scripting used to code the `cloud-init` script <br>
+- `rpm-build` used for creation of dummy rpm package <br>
 - `Chef` used for setting the required system state explained in item 2 above <br>
 - `Github` used as source repo and git commands extensively used while development <br>
 - `Chef-client` run in local-mode eliminating the need of Chef server. <br>
