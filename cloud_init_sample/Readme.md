@@ -7,12 +7,12 @@
    - Install a package called “my-monitoring-agent”. Assume that the package repository is already configured <br>
    - Set the hostname in the configuration of the monitoring agent. Config file located at “/etc/mon-agent/agent.conf”  <br>
    - Ensure that the two users, “alice” and “bob”, exist and are part of the group “my-staff” <br>
-- Also the instances assigned with tag name DEMO, so all instances will be grouped under the tag and can be deleted easily later (if not required)
+- Also the instances will be assigned with tag name 'DEMO', so all instances will be grouped under the tag and can be deleted easily later (if not required)
 
 ### Goal
 - The script can be used to create the bulk instances, applied with similar config across all the instances. Hence achieving the goal of "Cattle" instance provisioning. <br>
 - In case the instances needed to be updated with new config, We can update the new config as code in Chef recipe. <br>
-- We can terminate all previously created instances and then can re-create the instances in bulk by simply executing the `create_instance.sh` script. <br>
+- We can terminate all previously created instances and then can re-create the instances in bulk by simply executing the script. <br>
 
 ### Technologies used
 - `AWS CLI` command for instance creation <br>
@@ -36,7 +36,7 @@
 - <a href="https://git-scm.com/downloads">Git Bash for Windows</a> to access Git repo and to run the shell script in Windows. 
 
 ### Pre-requisite for running resource creation script
-- Setup Security group rule for rhel in AWS. In-bound SG rule with SSH port 22 enabled.  
+- Setup Security group rule for rhel in AWS. In-bound SG rule with SSH port 22 should be enabled.  
 - Setup AWS keypair to be used for login to instance
 
 ### Script running procedure
