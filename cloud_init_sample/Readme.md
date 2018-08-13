@@ -1,17 +1,18 @@
 # Cloud Init Sample code Repo
-## AWS EC2 Instance creation with cloud-init script passed as user_data 
-### This code is the wrapper script which does the following
--  Creates 'n' number EC2 instances of type t2.micro with RHEL OS <br>
+## 1. AWS EC2 Instance creation with cloud-init script passed as user_data 
+### `create_instance.sh` is the wrapper script which does the following
+-  Creates 'n' number EC2 instances of type t2.micro with RHEL 7 OS <br>
 -  Each instance will be having below configurations set when the instances creation is completed <br>
    - Set a hostname on operating system level <br>
    - Install a package called “my-monitoring-agent”. Assume that the package repository is already configured <br>
    - Set the hostname in the configuration of the monitoring agent. Config file located at “/etc/mon-agent/agent.conf”  <br>
    - Ensure that the two users, “alice” and “bob”, exist and are part of the group “my-staff” <br>
+- Also the instances assigned with tag name DEMO, so all instances will be grouped under the tag and can be deleted easily later (if not required)
 
 ### Goal
-- The script can be used to create the bulk instances, applied with similar config across all the instances. Hence this can be considered as "Cattle" instance provisioning. <br>
-- In case the instances needed to be updated with new config, they can be terminated in bulk <br>
-- We can update the Chef config and can re-create the instances in bulk using the `create_instance.sh` script. <br>
+- The script can be used to create the bulk instances, applied with similar config across all the instances. Hence achieving the goal of "Cattle" instance provisioning. <br>
+- In case the instances needed to be updated with new config, We can update the new config as code in Chef recipe. <br>
+- We can terminate all previously created instances and then can re-create the instances in bulk by simply executing the `create_instance.sh` script. <br>
 
 ### Technologies used
 - `AWS CLI` command for instance creation <br>
@@ -22,28 +23,50 @@
 - `Github` used as source repo and git commands extensively used while development <br>
 - `Chef-client` run in local-mode eliminating the need of Chef server. <br>
 
+### Script functionality explained
+- `Create_instance.sh` script uses the AWS CLI command to invoke the resource creation in AWS.
+- The AWS CLI command for instance creation is `aws ec2 run-instance`. 
+- We are sending the `install.txt` file as an option in AWS CLI user-data and the script is executed by `Cloud-init` process when the EC2 instance is created.
+- The `install.txt` has the code for installing the required installers, checking out repo from git and running Chef client command to set the desired VM config   
+
+## 2. Instance creation steps Explained
 ### Pre-requisite Setup
-- AWS CLI setup / config
-- Git for Linux or Gitbash for Windows setup required to access git and clone repos.
+- AWS CLI setup / config : <a href="https://docs.aws.amazon.com/cli/latest/userguide/installing.html">AWS CLI</a> and <a href="https://docs.aws.amazon.com/cli/latest/reference/configure/">Configure CLI</a><br>
+- Install Git for Linux using the command `yum install git -y` or <br>
+- <a href="https://git-scm.com/downloads">Git Bash for Windows</a> to access Git repo and to run the shell script in Windows. 
 
-### Instance creation steps
-- Setup SG rule for rhel in AWS
+### Pre-requisite for running resource creation script
+- Setup Security group rule for rhel in AWS. In-bound SG rule with SSH port 22 enabled.  
 - Setup AWS keypair to be used for login to instance
-- Clone the Cloud_init_sample repo 
-- cd Cloud_init_sample
-- Update the SG-rule name and key-pair name in the script
-- Run `./create_instances.sh 1` . This command will create 1 EC2 instance of type t2.micro with RHEL OS <br>
-- TBA > profile and subnet/sg param
 
-### Terminate Instances
-- Run `./terminate_instances.sh default` . This command will terminate all the instances available under account linked to default profile
+### Script running procedure
+- Clone the cloud_init_sample repo 
+- cd cloud_init_sample
+- Fetch the SG-rule name and key-pair name by executing the script `./get_sg_key.sh`
+- Example script execution command structure, `./create_instance.sh 1 rhel_sg_rule myaws_key` .  This command will create 1 EC2 instance of type t2.micro with RHEL OS <br>
 
-### Source code repo details
+## 3. Terminate Instances
+- Run `./terminate_instances.sh` . This command will terminate all the instances with tag name "DEMO".
+
+## 4. Source code repo details making this entire functionality
+- I've pushed all the source code in Github, <br>
 [AWS CLI instance create repo](https://github.com/chefgs/aws_cli_scripts/tree/master/cloud_init_sample) <br>
 [Chef cookbook repo](https://github.com/chefgs/cloud_init.git) <br>
 [Dummy rpm create repo](https://github.com/chefgs/create_dummy_rpm.git) <br>
 
-### Output details
+## 5. Best practices followed
+- Cloud-init and Chef run outputs are captured in log to identify any script failures.
+- Cloud-init output is redirected to the path `/var/log/userdata.out`
+- Chef-client output is redirected to the path `/var/log/chefrun.out`
+- Shell script has been coded with validation check to avoid the error scenarios
+- Chef cookbook coded with below best practices,
+  - Variables stored as attributes
+  - Gaurd check has been added while installing RPM from local path
+- Enough comment has been added in all the scripts for anyone to understand the code.
+- Every source code has been preserved in Github SCM. 
+- Enitre repo detail has been documented in Github readme.
+
+## 6. Output details
 #### Hostname set in OS and agent.conf
 ```
 [root@cloud-init-server log]# hostname
@@ -130,3 +153,7 @@ Running handlers complete
 Chef Client finished, 11/17 resources updated in 01 seconds
 
 ```
+
+## 7. Possible alternatives of Chef
+- The instance desired state configuration could also be possible with Chef "kind-of" alternative technologies like Puppet or Ansible etc.
+- So with the same `install.txt` script as a base, it can be modified to alternative Infra as code tool installation and execution.
