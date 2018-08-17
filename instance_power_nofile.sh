@@ -1,3 +1,16 @@
+###############################################################
+## Script takes the below 2 parameters
+## param 1 - AWS account profile name - "default" or "account2"
+## param 2 - power state - start or stop 
+
+## Example: 
+## ./instance_power.sh default start
+## ./instance_power.sh account2 stop
+
+##
+## This script can be used to power ON / OFF EC2 instances
+## Script considers two AWS accounts configured with corresponding profile names "default" and "account2"
+###############################################################
 
 
 profile=$1
