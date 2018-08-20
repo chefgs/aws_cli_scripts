@@ -37,5 +37,5 @@ fi
 ;;
 esac
 else
-  echo "Instance ID file is empty. Nothing to delete"
+  echo "No instance found. Nothing to delete"
 fi
