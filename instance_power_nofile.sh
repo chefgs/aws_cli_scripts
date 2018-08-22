@@ -27,7 +27,7 @@ else
     aws ec2 start-instances --instance-ids $instances >> powerstate.log 2>&1
 fi
 ;;
-"stop")
+"stop") 
 echo "Stopping instances : $instances"
 if [ $profile == 'account2' ] ; then
     aws ec2 stop-instances --profile $profile --instance-ids $instances >> powerstate.log 2>&1
