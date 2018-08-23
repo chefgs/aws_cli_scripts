@@ -17,7 +17,7 @@ profile=$1
 power_state=$2
 instances=`aws ec2 describe-instances --filters "Name=instance-state-name,Values=[running,stopped]" --profile $profile | grep -i "InstanceId" | awk -F'\"' '{ print  $4 }' | xargs`
 
-if [ ! -z $instances ] ; then
+if [ ! -z "$instances" ] ; then
 case $power_state in
 "start")
   echo "Starting instances : $instances"

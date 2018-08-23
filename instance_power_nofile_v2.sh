@@ -18,7 +18,7 @@ power_state=$2
 case $power_state in
 "start")
   instances_off=`aws ec2 describe-instances --filters "Name=instance-state-name,Values=[stopped]" --profile $profile | grep -i "InstanceId" | awk -F'\"' '{ print  $4 }' | xargs`
-  if [ ! -z $instances_off ] ; then
+  if [ ! -z "$instances_off" ] ; then
     echo "Starting instances : $instances_off"
     aws ec2 start-instances --profile $profile --instance-ids $instances_off >> powerstate.log 2>&1
   else
@@ -27,7 +27,7 @@ case $power_state in
 ;;
 "stop")
   instances_on=`aws ec2 describe-instances --filters "Name=instance-state-name,Values=[running]" --profile $profile | grep -i "InstanceId" | awk -F'\"' '{ print  $4 }' | xargs`
-  if [ ! -z $instances_on ] ; then
+  if [ ! -z "$instances_on" ] ; then
   echo "Stopping instances : $instances_on"
   aws ec2 stop-instances --profile $profile --instance-ids $instances_on >> powerstate.log 2>&1
   else
