@@ -9,8 +9,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: Shell script Linting
-      # run: bash -n 
     - name: Run a one-line script
       run: echo Hello, world!
       shell: bash
